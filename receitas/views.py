@@ -25,6 +25,8 @@ def buscar(request):
     if 'buscar' in request.GET:
         nome_a_buscar = request.GET['buscar']
         receitas = Receita.objects.filter(nome_receita__icontains=nome_a_buscar )
+        if (not receitas.exists()) :
+            receitas = None
     receita_a_exibir = {
         'receitas': receitas
     }
