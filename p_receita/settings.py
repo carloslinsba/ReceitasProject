@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import os.path
+import os.path, sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'pessoas',
     'receitas',
     'usuarios',
     'django.contrib.admin',
@@ -57,7 +56,7 @@ ROOT_URLCONF = 'p_receita.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join( BASE_DIR, 'receitas/templates')],
+        'DIRS': [os.path.join( BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,6 +139,10 @@ MESSAGE_TAGS = {
      messages.ERROR: 'danger',
      messages.SUCCESS: 'success',
  }
+
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert (0,os.path.join(PROJECT_ROOT, '../apps'))
+
 
 #print(STATIC_ROOT)
 #print(BASE_DIR)
