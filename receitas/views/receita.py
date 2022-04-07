@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 def index(request):
+    """ Renderiza a pagina inicial com as receitas """
     receitas = Receita.objects.order_by('-data_receita').filter(publicada = True)
     paginator = Paginator(receitas, 3)
     page = request.GET.get('page')
@@ -20,6 +21,7 @@ def index(request):
 
 
 def receita(request, receita_id):
+    """ Renderiza a pagina de detalhes de uma receita """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita_a_exibir = {
         'receita' : receita
@@ -27,6 +29,7 @@ def receita(request, receita_id):
     return render(request, 'receitas/receita.html', receita_a_exibir)
 
 def buscar(request):
+    """ Realiza a busca por receitas e renderiza uma pagina com os resultados"""
     if 'buscar' in request.GET:
         nome_a_buscar = request.GET['buscar']
         receitas = Receita.objects.order_by('-data_receita').filter(nome_receita__icontains=nome_a_buscar).filter( publicada = True)
@@ -37,6 +40,7 @@ def buscar(request):
     return render(request, 'buscar.html', receita_a_exibir)
 
 def criar_receita(request):
+    """ Permite ao usuario criar uma nova receita e salva no BD"""
     if request.method == 'POST':
         nome_receita= request.POST['nome_receita']
         ingredientes= request.POST['ingredientes']
@@ -55,11 +59,13 @@ def criar_receita(request):
 
 
 def deletar_receita(request, receita_id):
+    """ Permite ao usuario deletar uma receita """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita.delete()
     return redirect('dashboard')
 
 def editar_receita(request, receita_id):
+    """ Permite ao usuario editar uma receita """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita_a_exibir = {
         'receita': receita
@@ -67,6 +73,7 @@ def editar_receita(request, receita_id):
     return render(request, 'receitas/editar_receita.html', receita_a_exibir)
 
 def atualizar_receita(request):
+    """ Apos a edicao de uma receita, realiza a atualizacao no BD"""
     if request.method=='POST':
         receita_id = request.POST['receita_id']
         receita= Receita.objects.get(pk= receita_id)
@@ -82,6 +89,7 @@ def atualizar_receita(request):
         return redirect('dashboard')
 
 def campo_vazio(campo, nome_do_campo, request):
+    """ Verifica se o campo é vazio e emite uma mensagem de alerta caso positivo """
     if campo.strip():
         return False
     else:

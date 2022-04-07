@@ -8,6 +8,7 @@ from receitas.views.receita import campo_vazio
 
 
 def cadastro(request):
+    """ Cadastra uma nova pessoa no sistema """
     if request.method == 'POST':
 
         nome = request.POST ['nome']
@@ -38,6 +39,7 @@ def cadastro(request):
     return render(request, 'usuarios/cadastro.html')
 
 def login(request):
+    """ Realiza o login de uma pessoa no sistema """
     if request.method == 'POST':
         email= request.POST ['email']
         senha = request.POST['senha']
@@ -56,10 +58,12 @@ def login(request):
     return render( request ,'usuarios/login.html')
 
 def logout(request):
+    """ Realiza o logout de uma pessoa no sistema """
     auth.logout(request)
     return redirect('index')
 
 def dashboard(request):
+    """ Renderiza a pagina com as receitas do usuario logado """
     if request.user.is_authenticated:
         receitas = None
 
@@ -77,6 +81,7 @@ def dashboard(request):
 
 
 def usuario_ja_cadastrado(request, nome, email):
+    """ Verifica se o usuario já foi cadastrado"""
     if User.objects.filter(email=email).exists():
         messages.error(request, "Usuário já cadastrado")
         return True
